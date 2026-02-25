@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "lint": "echo 'no lint configured yet'"
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

@@ -22,8 +22,14 @@ server.tool(
   "Search for product launches on LaunchX. Returns recently launched products sorted by engagement.",
   {
     query: z.string().optional().describe("Search query (product name, description, or tags)"),
-    category: z.string().optional().describe("Category slug to filter by (e.g. 'ai-ml', 'developer-tools')"),
-    timeframe: z.enum(["today", "week", "month", "all"]).default("week").describe("Time period to search"),
+    category: z
+      .string()
+      .optional()
+      .describe("Category slug to filter by (e.g. 'ai-ml', 'developer-tools')"),
+    timeframe: z
+      .enum(["today", "week", "month", "all"])
+      .default("week")
+      .describe("Time period to search"),
     limit: z.number().min(1).max(20).default(10).describe("Max results to return"),
   },
   async ({ query, category, timeframe, limit }) => {
@@ -47,9 +53,7 @@ server.tool(
     if (category) q = q.eq("categories.slug", category);
     if (query) q = q.or(`name.ilike.%${query}%,one_liner.ilike.%${query}%`);
 
-    const { data, error } = await q
-      .order("x_likes", { ascending: false })
-      .limit(limit);
+    const { data, error } = await q.order("x_likes", { ascending: false }).limit(limit);
 
     if (error) {
       return { content: [{ type: "text" as const, text: `Error: ${error.message}` }] };
@@ -90,9 +94,7 @@ server.tool(
   async ({ id }) => {
     const { data, error } = await supabase
       .from("launches")
-      .select(
-        `*, categories(name, slug), makers(x_handle, display_name, is_verified)`
-      )
+      .select(`*, categories(name, slug), makers(x_handle, display_name, is_verified)`)
       .eq("id", id)
       .single();
 
@@ -132,9 +134,7 @@ server.tool(
 
     if (category) q = q.eq("categories.slug", category);
 
-    const { data, error } = await q
-      .order("x_likes", { ascending: false })
-      .limit(limit);
+    const { data, error } = await q.order("x_likes", { ascending: false }).limit(limit);
 
     if (error) {
       return { content: [{ type: "text" as const, text: `Error: ${error.message}` }] };
@@ -159,25 +159,20 @@ server.tool(
 
 // ── Tool: get_categories ─────────────────────────
 
-server.tool(
-  "get_categories",
-  "List all available product categories on LaunchX.",
-  {},
-  async () => {
-    const { data, error } = await supabase
-      .from("categories")
-      .select("name, slug, description")
-      .order("name");
+server.tool("get_categories", "List all available product categories on LaunchX.", {}, async () => {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("name, slug, description")
+    .order("name");
 
-    if (error) {
-      return { content: [{ type: "text" as const, text: `Error: ${error.message}` }] };
-    }
-
-    return {
-      content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
-    };
+  if (error) {
+    return { content: [{ type: "text" as const, text: `Error: ${error.message}` }] };
   }
-);
+
+  return {
+    content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
+  };
+});
 
 // ── Tool: submit_launch ──────────────────────────
 

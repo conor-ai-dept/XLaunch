@@ -1,6 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import type {
-  Launch,
   LaunchPublic,
   SubmitLaunchRequest,
   SubmitLaunchResponse,
@@ -66,8 +65,7 @@ export class LaunchService {
     return {
       id: launch.id,
       status: launch.status,
-      message:
-        "Launch submitted successfully! It will be reviewed and scheduled for a daily drop.",
+      message: "Launch submitted successfully! It will be reviewed and scheduled for a daily drop.",
     };
   }
 

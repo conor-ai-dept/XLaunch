@@ -6,15 +6,11 @@ import ora from "ora";
 import Conf from "conf";
 
 const config = new Conf({ projectName: "launchx" });
-const API_BASE =
-  process.env.LAUNCHX_API_URL ?? "https://api.launchx.dev/api/v1";
+const API_BASE = process.env.LAUNCHX_API_URL ?? "https://api.launchx.dev/api/v1";
 
 const program = new Command();
 
-program
-  .name("lx")
-  .description("🚀 LaunchX — Launch your product in 60 seconds")
-  .version("0.1.0");
+program.name("lx").description("🚀 LaunchX — Launch your product in 60 seconds").version("0.1.0");
 
 // ── Auth ─────────────────────────────────────────
 
@@ -46,9 +42,7 @@ program
   .action(async (opts) => {
     const apiKey = config.get("apiKey") as string;
     if (!apiKey) {
-      console.error(
-        chalk.red("Not authenticated. Run: lx auth <your-api-key>")
-      );
+      console.error(chalk.red("Not authenticated. Run: lx auth <your-api-key>"));
       process.exit(1);
     }
 
@@ -119,19 +113,13 @@ program
         return;
       }
 
-      console.log(
-        chalk.bold(`\n Found ${data.total} launches:\n`)
-      );
+      console.log(chalk.bold(`\n Found ${data.total} launches:\n`));
 
       for (const launch of data.launches) {
         const likes = chalk.red(`♥ ${launch.x_likes}`);
         const reposts = chalk.blue(`⟲ ${launch.x_reposts}`);
-        console.log(
-          `  ${chalk.bold(launch.name)} ${chalk.dim("—")} ${launch.one_liner}`
-        );
-        console.log(
-          `  ${likes}  ${reposts}  ${chalk.dim(launch.url)}`
-        );
+        console.log(`  ${chalk.bold(launch.name)} ${chalk.dim("—")} ${launch.one_liner}`);
+        console.log(`  ${likes}  ${reposts}  ${chalk.dim(launch.url)}`);
         if (launch.category) {
           console.log(`  ${chalk.cyan(`[${launch.category.name}]`)}`);
         }
@@ -173,9 +161,7 @@ program
       data.launches.forEach((launch: any, i: number) => {
         const rank = chalk.bold(`#${i + 1}`);
         const likes = chalk.red(`♥ ${launch.x_likes}`);
-        console.log(
-          `  ${rank} ${chalk.bold(launch.name)} ${likes}`
-        );
+        console.log(`  ${rank} ${chalk.bold(launch.name)} ${likes}`);
         console.log(`     ${launch.one_liner}`);
         console.log(`     ${chalk.dim(launch.url)}`);
         console.log();

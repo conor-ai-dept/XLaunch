@@ -1,17 +1,10 @@
 import { Router, Request, Response } from "express";
 import { LaunchService } from "../services/launch.js";
-import {
-  submitLaunchSchema,
-  searchLaunchesSchema,
-  trendingSchema,
-} from "../validation.js";
+import { submitLaunchSchema, searchLaunchesSchema, trendingSchema } from "../validation.js";
 import { apiKeyAuth } from "../middleware/auth.js";
 import { SupabaseClient } from "@supabase/supabase-js";
 
-export function createLaunchRouter(
-  launchService: LaunchService,
-  supabase: SupabaseClient
-): Router {
+export function createLaunchRouter(launchService: LaunchService, supabase: SupabaseClient): Router {
   const router = Router();
 
   // ── Public routes ──────────────────────────────
@@ -31,11 +24,7 @@ export function createLaunchRouter(
   router.get("/launches/trending", async (req: Request, res: Response) => {
     try {
       const params = trendingSchema.parse(req.query);
-      const result = await launchService.trending(
-        params.timeframe,
-        params.category,
-        params.limit
-      );
+      const result = await launchService.trending(params.timeframe, params.category, params.limit);
       res.json(result);
     } catch (err: any) {
       res.status(400).json({ error: err.message });
@@ -69,23 +58,19 @@ export function createLaunchRouter(
   // ── Authenticated routes ───────────────────────
 
   /** Submit a launch (requires API key) */
-  router.post(
-    "/launches",
-    apiKeyAuth(supabase),
-    async (req: Request, res: Response) => {
-      try {
-        const input = submitLaunchSchema.parse(req.body);
-        const result = await launchService.submit(input);
-        res.status(201).json(result);
-      } catch (err: any) {
-        if (err.name === "ZodError") {
-          res.status(400).json({ error: "Validation failed", details: err.errors });
-          return;
-        }
-        res.status(500).json({ error: err.message });
+  router.post("/launches", apiKeyAuth(supabase), async (req: Request, res: Response) => {
+    try {
+      const input = submitLaunchSchema.parse(req.body);
+      const result = await launchService.submit(input);
+      res.status(201).json(result);
+    } catch (err: any) {
+      if (err.name === "ZodError") {
+        res.status(400).json({ error: "Validation failed", details: err.errors });
+        return;
       }
+      res.status(500).json({ error: err.message });
     }
-  );
+  });
 
   return router;
 }

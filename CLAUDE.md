@@ -64,7 +64,9 @@ npm run dev:cli -- <args>  # Run CLI (e.g., -- search "ai")
 npm run dev:mcp            # Run MCP server
 npm run build              # Build all packages
 npm run typecheck          # Type-check all packages
-npm run lint               # Lint all packages (placeholder — not yet configured)
+npm run lint               # Lint all packages (ESLint 10 + typescript-eslint)
+npm run format             # Auto-format all source files (Prettier)
+npm run format:check       # Check formatting without writing
 npm run test               # Run tests (placeholder — no tests yet)
 ```
 
