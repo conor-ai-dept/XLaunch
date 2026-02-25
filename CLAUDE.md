@@ -18,6 +18,10 @@ XLaunch/
     ├── .npmrc                # engine-strict=true
     ├── package.json          # npm workspaces root
     ├── tsconfig.json         # Base TS config (strict, ES2022, Node16)
+    ├── .github/
+    │   ├── workflows/ci.yml  # CI: typecheck (Node 20+22), lint, build (main only)
+    │   ├── dependabot.yml    # Weekly dependency update PRs
+    │   └── BRANCH_PROTECTION.md  # Manual GitHub settings to configure
     ├── supabase/
     │   ├── migrations/       # 3 SQL migration files (run in order)
     │   └── seed.sql          # Test data (8 categories, test maker, test API key, 5 launches)
@@ -42,6 +46,8 @@ All application code lives under `launchx-initial/`. The root `XLaunch/` directo
 - **MCP tools:** `packages/mcp-server/src/index.ts`
 - **Roadmap and epics:** `docs/PRD.md`
 - **Code review findings:** `REVIEW.md`
+- **CI workflow:** `.github/workflows/ci.yml`
+- **Branch protection guide:** `.github/BRANCH_PROTECTION.md`
 
 ## Commands
 

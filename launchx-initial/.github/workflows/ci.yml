@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: Typecheck (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: launchx-initial/package-lock.json
+
+      - name: Install dependencies
+        working-directory: launchx-initial
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: launchx-initial
+        run: npm run typecheck
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: launchx-initial/package-lock.json
+
+      - name: Install dependencies
+        working-directory: launchx-initial
+        run: npm ci
+
+      - name: Lint
+        working-directory: launchx-initial
+        run: npm run lint
+
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: npm
+  #         cache-dependency-path: launchx-initial/package-lock.json
+  #     - run: npm ci
+  #       working-directory: launchx-initial
+  #     - run: npm test
+  #       working-directory: launchx-initial
+  # Uncomment when test scripts are configured (E0.5)
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: launchx-initial/package-lock.json
+
+      - name: Install dependencies
+        working-directory: launchx-initial
+        run: npm ci
+
+      - name: Build all packages
+        working-directory: launchx-initial
+        run: npm run build
