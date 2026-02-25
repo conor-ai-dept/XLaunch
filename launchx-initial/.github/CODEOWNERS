@@ -1,0 +1,15 @@
+# LaunchX Code Owners
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default: project maintainers review everything
+*                           @conor-ai-dept
+
+# Package-specific ownership
+packages/api/               @conor-ai-dept
+packages/cli/               @conor-ai-dept
+packages/mcp-server/        @conor-ai-dept
+packages/shared/            @conor-ai-dept
+
+# Infrastructure and config
+.github/                    @conor-ai-dept
+supabase/                   @conor-ai-dept

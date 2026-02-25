@@ -18,9 +18,13 @@ XLaunch/
     ├── .npmrc                # engine-strict=true
     ├── package.json          # npm workspaces root
     ├── tsconfig.json         # Base TS config (strict, ES2022, Node16)
+    ├── CONTRIBUTING.md       # Branch strategy, PR standards, review process
     ├── .github/
     │   ├── workflows/ci.yml  # CI: typecheck (Node 20+22), lint, build (main only)
     │   ├── dependabot.yml    # Weekly dependency update PRs
+    │   ├── CODEOWNERS        # Review assignment by package
+    │   ├── pull_request_template.md
+    │   ├── ISSUE_TEMPLATE/   # Bug, feature, task templates
     │   └── BRANCH_PROTECTION.md  # Manual GitHub settings to configure
     ├── supabase/
     │   ├── migrations/       # 3 SQL migration files (run in order)
@@ -46,6 +50,7 @@ All application code lives under `launchx-initial/`. The root `XLaunch/` directo
 - **MCP tools:** `packages/mcp-server/src/index.ts`
 - **Roadmap and epics:** `docs/PRD.md`
 - **Code review findings:** `REVIEW.md`
+- **Contributing guide:** `CONTRIBUTING.md` — branch naming, PR process, review standards
 - **CI workflow:** `.github/workflows/ci.yml`
 - **Branch protection guide:** `.github/BRANCH_PROTECTION.md`
 
