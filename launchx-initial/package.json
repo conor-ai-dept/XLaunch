@@ -1,0 +1,21 @@
+{
+  "name": "launchx",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-native product launch platform on X",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev --workspace=@launchx/api",
+    "dev:cli": "npm run dev --workspace=@launchx/cli",
+    "dev:mcp": "npm run dev --workspace=@launchx/mcp-server",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspaces",
+    "typecheck": "npm run typecheck --workspaces"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

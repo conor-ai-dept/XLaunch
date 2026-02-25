@@ -1,0 +1,25 @@
+{
+  "name": "@launchx/mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for AI agents to discover and submit product launches",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'no lint configured yet'"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@launchx/shared": "*",
+    "@supabase/supabase-js": "^2.49.0",
+    "dotenv": "^16.4.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
