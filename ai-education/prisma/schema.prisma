@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  passwordHash String       @map("password_hash")
+  name         String
+  createdAt    DateTime     @default(now()) @map("created_at")
+  enrollments  Enrollment[]
+  progress     Progress[]
+
+  @@map("users")
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  description String
+  thumbnail   String       @default("/images/default-course.png")
+  difficulty  String       @default("beginner")
+  category    String
+  duration    String       @default("2 hours")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  modules     Module[]
+  enrollments Enrollment[]
+
+  @@map("courses")
+}
+
+model Module {
+  id       String   @id @default(uuid())
+  courseId  String   @map("course_id")
+  title    String
+  order    Int
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons  Lesson[]
+
+  @@map("modules")
+}
+
+model Lesson {
+  id              String     @id @default(uuid())
+  moduleId        String     @map("module_id")
+  title           String
+  slug            String
+  content         String
+  order           Int
+  durationMinutes Int        @default(10) @map("duration_minutes")
+  module          Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress        Progress[]
+
+  @@unique([moduleId, slug])
+  @@map("lessons")
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  courseId    String   @map("course_id")
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+model Progress {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  lessonId    String   @map("lesson_id")
+  completed   Boolean  @default(false)
+  completedAt DateTime? @map("completed_at")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("progress")
+}
